@@ -42,10 +42,40 @@ static PyObject *std_standard_dev(PyObject *self, PyObject *args)
     return PyFloat_FromDouble(calcSD(pr, pr_length));
 }
 
+static PyObject *return_listC(PyObject *self, PyObject *args)
+{
+    PyObject *float_list;
+    int pr_length;
+    double *pr;
+
+    if (!PyArg_ParseTuple(args, "O", &float_list))
+        return NULL;
+    pr_length = PyObject_Length(float_list);
+    if (pr_length < 0)
+        return NULL;
+    pr = (double *)malloc(sizeof(double *) * pr_length);
+    if (pr == NULL)
+        return NULL;
+    for (int index = 0; index < pr_length; index++)
+    {
+        PyObject *key = PyLong_FromLong(index);
+        PyObject *item = PyObject_GetItem(float_list, key);
+        pr[index] = PyFloat_AsDouble(item);
+    }
+
+    PyObject *new_list = PyList_New(pr_length);
+    for (int index = 0; index < pr_length; index++)
+        PyList_SetItem(new_list, index, Py_BuildValue("d", pr[index]));
+
+    return new_list;
+}
+
 static PyMethodDef std_methods[] = {
     {"standard_dev", std_standard_dev, METH_VARARGS,
      "Return the standard deviation of a list."},
-    {NULL, NULL} /* sentinel */
+    {"return_list", return_listC, METH_VARARGS,
+     "Return the same list input"},
+    {NULL, NULL, NULL} /* sentinel */
 };
 
 static struct PyModuleDef stdmodule = {
