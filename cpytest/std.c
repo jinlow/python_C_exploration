@@ -38,6 +38,8 @@ static PyObject *std_standard_dev(PyObject *self, PyObject *args)
         PyObject *key = PyLong_FromLong(index);
         PyObject *item = PyObject_GetItem(float_list, key);
         pr[index] = PyFloat_AsDouble(item);
+        Py_DECREF(item);
+        Py_DECREF(key);
     }
     return PyFloat_FromDouble(calcSD(pr, pr_length));
 }
@@ -61,6 +63,8 @@ static PyObject *return_listC(PyObject *self, PyObject *args)
         PyObject *key = PyLong_FromLong(index);
         PyObject *item = PyObject_GetItem(float_list, key);
         pr[index] = PyFloat_AsDouble(item);
+        Py_DECREF(item);
+        Py_DECREF(key);
     }
 
     PyObject *new_list = PyList_New(pr_length);
