@@ -1,7 +1,7 @@
 #include <Python.h>
 #include <math.h>
 
-double calcSD(double data[], int size)
+double calcSD(double data[], size_t size)
 {
     int i;
     double sum = 0.0, mean, StandardDeviation = 0.0;
@@ -22,7 +22,8 @@ double calcSD(double data[], int size)
 static PyObject *std_standard_dev(PyObject *self, PyObject *args)
 {
     PyObject *float_list;
-    int pr_length;
+    Py_ssize_t pr_length;
+    //size_t pr_int_length;
     double *pr;
 
     if (!PyArg_ParseTuple(args, "O", &float_list))
@@ -41,13 +42,14 @@ static PyObject *std_standard_dev(PyObject *self, PyObject *args)
         Py_DECREF(item);
         Py_DECREF(key);
     }
+
     return PyFloat_FromDouble(calcSD(pr, pr_length));
 }
 
 static PyObject *return_listC(PyObject *self, PyObject *args)
 {
     PyObject *float_list;
-    int pr_length;
+    Py_ssize_t pr_length;
     double *pr;
 
     if (!PyArg_ParseTuple(args, "O", &float_list))
@@ -75,11 +77,9 @@ static PyObject *return_listC(PyObject *self, PyObject *args)
 }
 
 static PyMethodDef std_methods[] = {
-    {"standard_dev", std_standard_dev, METH_VARARGS,
-     "Return the standard deviation of a list."},
-    {"return_list", return_listC, METH_VARARGS,
-     "Return the same list input"},
-    {NULL, NULL, NULL} /* sentinel */
+    {"standard_dev", (PyCFunction)std_standard_dev, METH_VARARGS, "Return the standard deviation of a list."},
+    {"return_list", (PyCFunction)return_listC, METH_VARARGS, "Return the same list input"},
+    {NULL, NULL, 0, NULL} /* sentinel */
 };
 
 static struct PyModuleDef stdmodule = {
