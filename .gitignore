@@ -1,0 +1,5 @@
+.mypy_cache/
+.vscode/
+build/
+std.dSYM/
+cpy_venv/

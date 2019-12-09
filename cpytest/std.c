@@ -3,7 +3,7 @@
 
 double calcSD(double data[], size_t size)
 {
-    int i;
+    size_t i;
     double sum = 0.0, mean, StandardDeviation = 0.0;
 
     for (i = 0; i < size; ++i)
