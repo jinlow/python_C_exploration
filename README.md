@@ -1,2 +1,2 @@
 # Exploring the Python/C API
-Just a repo for some toy examples I created for using the python/C API.
+A repo of some small examples created to test the Python/C API.
