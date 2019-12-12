@@ -11,9 +11,8 @@ double standard_dev(std::vector<double> vec)
     // Mean of vector
     double vec_sum = std::accumulate(vec.begin(), vec.end(), 0.0);
     double vec_mean = vec_sum / vec.size();
-    // std::cout << vec_mean << std::endl;
 
-    // Squared sum
+    // Square each element
     for (auto& element : vec)
         element = pow(element - vec_mean, 2);
 
@@ -23,12 +22,28 @@ double standard_dev(std::vector<double> vec)
     return sqrt(vec_var);
 }
 
-// int main()
-// {
-//     std::vector<double> new_vec = {1.0, 2.0, 3.0, 4.0, 5.0};
-//     std::cout << standard_dev(new_vec) << std::endl;
-//     return 0;
-// }
+double uni_regC(std::vector<double> xvar, 
+               std::vector<double> yvar,
+               double eta = 0.05,
+               int epochs = 50)
+{
+    double b0 = 0;
+    double b1 = 0;
+    int nvars = yvar.size();
+    int rounds = epochs * nvars;
+
+    // Simple gradient descent, one epoch is 
+    // a full pass through the data.
+    for(int i = 0, i < rounds, i++) {
+        int idx = i % nvars;
+        double pred = b0 + b1 * x[idx];
+        double err = p - y[idx];
+        b0 = b0 - eta * err;
+        b1 = b1 - eta * err * x[idx];
+    }
+    double preds[] = {b0, b1};
+    reutn preds;
+}
 
 static PyObject *std_devPy(PyObject *self, PyObject *args)
 {
@@ -51,6 +66,11 @@ static PyObject *std_devPy(PyObject *self, PyObject *args)
         Py_DECREF(index);
     }
     return PyFloat_FromDouble(standard_dev(list));
+}
+
+static PyObject *uni_regPy(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    
 }
 
 static PyMethodDef module_methods[] = {
