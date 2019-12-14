@@ -76,6 +76,11 @@ static PyObject* uni_regPy(PyObject *self, PyObject *args, PyObject *kwargs)
 
     double* preds = uni_regC(xvar, yvar, eta, epochs);
 
+    if (isnan(preds[0]) || isnan(preds[1])) {
+        PyErr_SetString(PyExc_ValueError, "function did not converge. \n Try setting a smaller eta value.");
+        return NULL;
+    }
+
     Py_ssize_t size = 2;
     PyObject* new_list = PyList_New(size);
     for (int index = 0; index < size; index++)
