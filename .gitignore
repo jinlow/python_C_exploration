@@ -3,3 +3,7 @@
 build/
 std.dSYM/
 cpy_venv/
+
+makefile
+scratchC
+scratchC.cpp
